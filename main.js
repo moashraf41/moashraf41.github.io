@@ -79,7 +79,7 @@ function t(t,i,e){return Math.max(t,Math.min(i,e))}var i=class{isRunning=!1;valu
   }
   sizeDust();
   gsap.ticker.add(() => {
-    if (document.hidden) return;
+    if (document.hidden || document.documentElement.classList.contains("cs-lock")) return;
     const push = gsap.utils.clamp(-6, 6, (lenis.velocity || 0) * 0.08);
     dctx.clearRect(0, 0, DW, DH);
     for (const p of specks){
@@ -539,11 +539,11 @@ function t(t,i,e){return Math.max(t,Math.min(i,e))}var i=class{isRunning=!1;valu
   }
   /* start fetching a case study the moment someone shows intent (hover, focus, touch) */
   const warmed = new Set();
-  const warm = el => { const u = el.getAttribute("href"); if (!u || warmed.has(u)) return; warmed.add(u);
+  const warm = el => { const u = el.getAttribute("data-href") || el.getAttribute("href"); if (!u || warmed.has(u)) return; warmed.add(u);
     const l = document.createElement("link"); l.rel = "prefetch"; l.href = u; document.head.appendChild(l); };
   document.querySelectorAll("[data-case]").forEach(el => ["pointerenter", "focus", "touchstart"].forEach(ev => el.addEventListener(ev, () => warm(el), { passive: true, once: true })));
   function open(card, fromHistory){
-    const url = card.getAttribute("href");
+    const url = card.getAttribute("data-href") || card.getAttribute("href");
     opener = card;
     title.textContent = card.dataset.title || card.querySelector(".label span")?.textContent || "Case study";
     frame.title = card.dataset.title ? title.textContent : title.textContent + " case study";
@@ -565,12 +565,22 @@ function t(t,i,e){return Math.max(t,Math.min(i,e))}var i=class{isRunning=!1;valu
     opener?.focus({ preventScroll: true });
   }
   function leave(){
+    /* close first: history.back() can be a no-op (a fresh tab, an embedded preview),
+       and then the viewer would stay on screen */
+    close();
     if (pushed){ pushed = false; history.back(); }
-    else { try { if (location.hash) history.replaceState(null, "", location.pathname + location.search); } catch (_) {} close(); }
+    else { try { if (location.hash) history.replaceState(null, "", location.pathname + location.search); } catch (_) {} }
   }
   document.querySelectorAll("[data-case]").forEach(card => card.addEventListener("click", e => {
+    /* the live-site link inside the card is a real link, not the case study */
+    if (e.target.closest && e.target.closest(".live")) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     if (card.dataset.download && smallScreen()) return;
+    e.preventDefault(); open(card);
+  }));
+  /* the project cards are not anchors any more, so they answer the keyboard like one */
+  document.querySelectorAll(".proj[data-case]").forEach(card => card.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
     e.preventDefault(); open(card);
   }));
   back.addEventListener("click", leave);
