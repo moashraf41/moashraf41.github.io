@@ -22,7 +22,7 @@ Open [http://localhost:8000](http://localhost:8000). No package installation or 
 - `main.js`: scrolling, animation, and case study viewer.
 - `vendor/`: GSAP and ScrollTrigger scripts with their license notices.
 - `work/`: MentoraX, LigoFlow, DawaBack, and TolabExam case studies and WebP screenshots (plus responsive sizes).
-- `resume/Resume.html`: resume.
+- `resume/Mohamed-Ashraf-Fahmy-CV.pdf`: the CV, linked from the contact section.
 - `serve.py`: local preview server with gzip.
 
 ## Hosting
