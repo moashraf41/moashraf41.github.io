@@ -21,7 +21,7 @@ Open [http://localhost:8000](http://localhost:8000). No package installation or 
 - `fonts.css` and `fonts/`: `@font-face` declarations and the woff2 files they point to.
 - `main.js`: scrolling, animation, and case study viewer.
 - `vendor/`: GSAP and ScrollTrigger scripts with their license notices.
-- `work/`: MentoraX, LigoFlow, DawaBack, TolabExam, ElCargo and Taahud case studies and WebP screenshots (plus responsive sizes).
+- `work/`: MentoraX, UniFlow, Taahud, DawaBack, ElCargo and TolabExam case studies and WebP screenshots (plus responsive sizes).
 - `resume/Mohamed-Ashraf-Fahmy-CV.pdf`: the CV, linked from the contact section.
 - `serve.py`: local preview server with gzip.
 
